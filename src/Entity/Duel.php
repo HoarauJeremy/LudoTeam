@@ -8,18 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: DuelRepository::class)]
 class Duel
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(nullable: true)]
     private ?bool $duel = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function isDuel(): ?bool
     {

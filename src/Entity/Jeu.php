@@ -6,6 +6,13 @@ use App\Repository\JeuRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "plateau" => Plateau::class,
+    "carte" => Carte::class,
+    "duel" => Duel::class
+])]
 class Jeu
 {
     #[ORM\Id]
@@ -16,7 +23,7 @@ class Jeu
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbParticipant = null;
 
     public function getId(): ?int
