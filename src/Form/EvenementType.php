@@ -14,16 +14,13 @@ class EvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom')
             ->add('dateEvenement', null, [
                 'widget' => 'single_text',
             ])
-            ->add('organisateur', EntityType::class, [
-                'class' => Utilisateur::class,
-                'choice_label' => 'nom',
-            ])
             ->add('participant', EntityType::class, [
                 'class' => Utilisateur::class,
-                'choice_label' => 'nom',
+                'choice_label' => 'id',
                 'multiple' => true,
             ])
         ;

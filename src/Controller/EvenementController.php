@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Utilisateur;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,9 @@ final class EvenementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $evenement->setOrganisateur(new Utilisateur()->getId());
+
             $entityManager->persist($evenement);
             $entityManager->flush();
 
