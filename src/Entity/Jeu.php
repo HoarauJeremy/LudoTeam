@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\JeuRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
@@ -25,6 +26,9 @@ class Jeu
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbParticipant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'jeux')]
+    private ?Evenement $evenement = null;
 
     public function getId(): ?int
     {
@@ -51,6 +55,18 @@ class Jeu
     public function setNbParticipant(int $nbParticipant): static
     {
         $this->nbParticipant = $nbParticipant;
+
+        return $this;
+    }
+
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
+
+    public function setEvenement(?Evenement $evenement): static
+    {
+        $this->evenement = $evenement;
 
         return $this;
     }
