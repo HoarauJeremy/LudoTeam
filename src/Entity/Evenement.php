@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -14,25 +15,30 @@ class Evenement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ["evenement:list"])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Groups(groups: ["evenement:list"])]
     private ?\DateTimeImmutable $dateEvenement = null;
 
     /**
      * @var Collection<int, Jeu>
      */
     #[ORM\OneToMany(targetEntity: Jeu::class, mappedBy: 'evenement')]
+    #[Groups(groups: ["evenement:list"])]
     private Collection $jeux;
 
     /**
      * @var Collection<int, Utilisateur>
      */
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'evenements')]
+    #[Groups(groups: ["evenement:list"])]
     private Collection $participant;
 
     #[ORM\ManyToOne(inversedBy: 'organiserPar')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(groups: ["evenement:list"])]
     private ?Utilisateur $organisateur = null;
 
     public function __construct()
