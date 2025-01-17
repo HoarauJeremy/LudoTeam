@@ -36,7 +36,7 @@ final class EvenementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $evenement->setOrganisateur(new Utilisateur()->getId());
+            // $evenement->setOrganisateur(new Utilisateur()->getId());
 
             $entityManager->persist($evenement);
             $entityManager->flush();
