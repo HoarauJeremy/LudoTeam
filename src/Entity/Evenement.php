@@ -25,15 +25,15 @@ class Evenement
     #[ORM\OneToMany(targetEntity: Jeu::class, mappedBy: 'evenement')]
     private Collection $jeux;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $organisateur = null;
-
     /**
      * @var Collection<int, Utilisateur>
      */
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'evenements')]
     private Collection $participant;
+
+    #[ORM\ManyToOne(inversedBy: 'organiserPar')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $organisateur = null;
 
     public function __construct()
     {
@@ -88,18 +88,6 @@ class Evenement
         return $this;
     }
 
-    public function getOrganisateur(): ?Utilisateur
-    {
-        return $this->organisateur;
-    }
-
-    public function setOrganisateur(Utilisateur $organisateur): static
-    {
-        $this->organisateur = $organisateur;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Utilisateur>
      */
@@ -120,6 +108,18 @@ class Evenement
     public function removeParticipant(Utilisateur $participant): static
     {
         $this->participant->removeElement($participant);
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Utilisateur
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Utilisateur $organisateur): static
+    {
+        $this->organisateur = $organisateur;
 
         return $this;
     }
