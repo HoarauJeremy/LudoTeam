@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CarteRepository::class)]
-class Carte
+class Carte extends Jeu
 {
     #[ORM\Column(nullable: true, type: Types::SMALLINT)]
     private ?int $nbCarte = null;

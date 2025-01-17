@@ -6,7 +6,7 @@ use App\Repository\DuelRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DuelRepository::class)]
-class Duel
+class Duel extends Jeu
 {
     #[ORM\Column(nullable: true)]
     private ?bool $duel = null;
