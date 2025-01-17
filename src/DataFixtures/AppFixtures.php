@@ -18,7 +18,12 @@ class AppFixtures extends Fixture
     {
         UtilisateurFactory::createMany(5);
 
-        EvenementFactory::createMany(15);
+        EvenementFactory::createMany(15, function() {
+            return [
+                'organisateur' => UtilisateurFactory::new(),
+                'participant' => UtilisateurFactory::randomSet(2)
+            ];
+        });
 
         PlateauFactory::createMany(7, function() {
             return ['evenement' => EvenementFactory::random()];
@@ -31,8 +36,6 @@ class AppFixtures extends Fixture
         DuelFactory::createMany(2, function() {
             return ['evenement' => EvenementFactory::random()];
         });
-
-
 
         $manager->flush();
     }
