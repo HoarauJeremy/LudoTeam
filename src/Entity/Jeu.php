@@ -6,6 +6,7 @@ use App\Repository\JeuRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
 #[ORM\InheritanceType("SINGLE_TABLE")]
@@ -20,19 +21,20 @@ class Jeu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(groups: ["evenement:list", "jeu:detail"])]
+    #[Groups(groups: ["evenement:list"])]
     private ?int $id = null;
-
+    
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ["evenement:list", "jeu:detail"])]
+    #[Groups(groups: ["evenement:list"])]
+    #[Assert\NotBlank]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    #[Groups(groups: ["evenement:list", "jeu:detail"])]
+    #[Groups(groups: ["evenement:list"])]
+    #[Assert\NotNull]
     private ?int $nbParticipant = null;
 
     #[ORM\ManyToOne(inversedBy: 'jeux')]
-    #[Groups(groups: ['jeu:detail'])]
     private ?Evenement $evenement = null;
 
     public function getId(): ?int

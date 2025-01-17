@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -18,8 +19,14 @@ class Evenement
     #[Groups(groups: ["evenement:list"])]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(groups: ["evenement:list"])]
+    #[Assert\NotBlank]
+    private ?string $nom = null;
+
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups(groups: ["evenement:list"])]
+    #[Assert\Date]
     private ?\DateTimeImmutable $dateEvenement = null;
 
     /**
