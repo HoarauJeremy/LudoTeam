@@ -7,7 +7,10 @@ use App\Entity\Duel;
 use App\Entity\Jeu;
 use App\Entity\Plateau;
 use App\Form\JeuType;
+use App\Repository\CarteRepository;
+use App\Repository\DuelRepository;
 use App\Repository\JeuRepository;
+use App\Repository\PlateauRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +20,57 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/jeu')]
 final class JeuController extends AbstractController
 {
-    #[Route(name: 'app_jeu_index', methods: ['GET'])]
-    public function index(JeuRepository $jeuRepository): Response
+
+    private $plateau;
+    private $carte;
+    private $duel;
+
+    function __construct(PlateauRepository $plateauRepository,CarteRepository $carteRepository, DuelRepository $duelRepository)
     {
+        $this->plateau = $plateauRepository;
+        $this->carte = $carteRepository;
+        $this->duel = $duelRepository;
+    }
+
+    #[Route(name: 'app_jeu_index', methods: ['GET'])]
+    public function index(JeuRepository $jeuRepository, Request $request): Response
+    {
+
+        $nom = $request->query->get('nom');
+        $nbParticipant = $request->query->get('nbParticipant');
+        $type = $request->query->get('type');
+
+
+        if ($nom !== null && $nbParticipant !== null && $type !== null) {
+            
+            $nom = $nom !== null ? (string)$nom : null;
+            $nbParticipant = $nbParticipant !== null ? (int)$nbParticipant : null;
+            $type = $type !== null ? (string)$type : null;
+            
+            if ($type !== null) {
+                
+                if ($type === 'plateau') {
+                    $data = $this->plateau->findAll();
+                }
+                
+                if ($type === 'carte') {
+                    $data = $this->carte->findAll();
+                }
+                
+                if ($type === 'duel') {
+                    $data = $this->duel->findAll();
+                }
+            } else {
+                $data = $jeuRepository->findByFiltre($nom, $nbParticipant);
+            }
+        } else {
+            $data = $jeuRepository->findAll();
+        }
+
+        dd(["Filtre" => [ $nom, $nbParticipant, $type ], "jeu" => $data]);
+
         return $this->render('jeu/index.html.twig', [
-            'jeus' => $jeuRepository->findAll(),
+            'jeus' => $data,
         ]);
     }
 
