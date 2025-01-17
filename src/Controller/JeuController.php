@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Carte;
+use App\Entity\Duel;
 use App\Entity\Jeu;
+use App\Entity\Plateau;
 use App\Form\JeuType;
 use App\Repository\JeuRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,8 +33,29 @@ final class JeuController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($jeu);
-            $entityManager->flush();
+
+            $type = $form->get('type')->getData();
+
+            if ($type === 'Plateau') {
+                $jeu = new Plateau();
+                $jeu->setNbDes(4);
+            } elseif ($type === 'Carte') {
+                $jeu = new Carte();
+                $jeu->setNbCarte(52);
+            } elseif ($type === 'Duel') {
+                $jeu = new Duel();
+                $jeu->setDuel(true);
+            }
+
+            if ($jeu) {
+            
+                $jeu->setNom($form->get('nom')->getData());
+                $jeu->setNbParticipant($form->get('nbParticipant')->getData());
+                $jeu->setEvenement($form->get('evenement')->getData());
+                
+                $entityManager->persist($jeu);
+                $entityManager->flush();
+            }
 
             return $this->redirectToRoute('app_jeu_index', [], Response::HTTP_SEE_OTHER);
         }

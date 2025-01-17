@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Evenement;
 use App\Entity\Jeu;
+use Doctrine\DBAL\Types\SmallIntType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,6 +22,17 @@ class JeuType extends AbstractType
                 'class' => Evenement::class,
                 'choice_label' => 'id',
             ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Plateau' => 'Plateau',
+                    'Carte' => 'Carte',
+                    'Duel' => 'Duel',
+                ],
+                'mapped' => false,
+                'placeholder' => 'Choisir un type de jeu',
+            ])
+            /* ->add('nbDes', null)
+            ->add('nbCarte') */
         ;
     }
 
