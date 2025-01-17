@@ -35,6 +35,7 @@ final class JeuController extends AbstractController
     #[Route(name: 'app_jeu_index', methods: ['GET'])]
     public function index(JeuRepository $jeuRepository, Request $request): Response
     {
+        // $this->denyAccessUnlessGranted('ROLES_USER');
 
         $nom = $request->query->get('nom');
         $nbParticipant = $request->query->get('nbParticipant');
@@ -66,9 +67,7 @@ final class JeuController extends AbstractController
         } else {
             $data = $jeuRepository->findAll();
         }
-
-        dd(["Filtre" => [ $nom, $nbParticipant, $type ], "jeu" => $data]);
-
+        
         return $this->render('jeu/index.html.twig', [
             'jeus' => $data,
         ]);
@@ -77,6 +76,8 @@ final class JeuController extends AbstractController
     #[Route('/new', name: 'app_jeu_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // $this->denyAccessUnlessGranted('ROLES_USER');
+
         $jeu = new Jeu();
         $form = $this->createForm(JeuType::class, $jeu);
         $form->handleRequest($request);
@@ -118,6 +119,8 @@ final class JeuController extends AbstractController
     #[Route('/{id}', name: 'app_jeu_show', methods: ['GET'])]
     public function show(Jeu $jeu): Response
     {
+        // $this->denyAccessUnlessGranted('ROLES_USER');
+
         return $this->render('jeu/show.html.twig', [
             'jeu' => $jeu,
         ]);
@@ -126,6 +129,8 @@ final class JeuController extends AbstractController
     #[Route('/{id}/edit', name: 'app_jeu_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Jeu $jeu, EntityManagerInterface $entityManager): Response
     {
+        // $this->denyAccessUnlessGranted('ROLES_USER');
+
         $form = $this->createForm(JeuType::class, $jeu);
         $form->handleRequest($request);
 
@@ -144,6 +149,8 @@ final class JeuController extends AbstractController
     #[Route('/{id}', name: 'app_jeu_delete', methods: ['POST'])]
     public function delete(Request $request, Jeu $jeu, EntityManagerInterface $entityManager): Response
     {
+        // $this->denyAccessUnlessGranted('ROLES_USER');
+
         if ($this->isCsrfTokenValid('delete'.$jeu->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($jeu);
             $entityManager->flush();
